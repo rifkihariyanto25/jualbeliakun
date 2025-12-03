@@ -10,7 +10,8 @@ class Skin extends Model
     protected $fillable = [
         'hero_id',
         'skin_name',
-        'skin_image'
+        'skin_image',
+        'category'
     ];
 
     public function hero(): BelongsTo

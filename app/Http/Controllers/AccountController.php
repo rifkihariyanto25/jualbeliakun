@@ -27,6 +27,17 @@ class AccountController extends Controller
         // Daftar rank
         $ranks = ['Warrior', 'Elite', 'Master', 'Grandmaster', 'Epic', 'Legend', 'Mythic', 'Mythical Glory'];
 
+        // Daftar highest rank dengan kategori
+        $highestRanks = [
+            'Warrior - GM' => 'Warrior - GM',
+            'Epic - Legend' => 'Epic - Legend',
+            'Mythic' => 'Mythic',
+            'Honor' => 'Honor',
+            'Glory' => 'Glory',
+            'Immortal < 500' => 'Immortal < 500',
+            'Immortal > 500' => 'Immortal > 500',
+        ];
+
         // Ambil semua heroes dari database dengan skins
         $heroesFromDb = Hero::with('skins')->orderBy('hero_name')->get();
 
@@ -50,12 +61,14 @@ class AccountController extends Controller
                     'id' => $skin->id,
                     'name' => $skin->skin_name,
                     'image' => $skin->skin_image,
+                    'category' => $skin->category,
                 ];
             })->toArray();
         }
 
         return view('accounts.create', [
             'ranks' => $ranks,
+            'highestRanks' => $highestRanks,
             'heroes' => $heroes,
             'heroesFullData' => $heroesFullData,
             'skins' => $skins
@@ -69,14 +82,18 @@ class AccountController extends Controller
     {
         $data = $request->validate([
             'rank' => 'required',
-            'price' => 'required|numeric',
+            'highest_rank' => 'nullable|string',
+            'winrate' => 'nullable|numeric|min:0|max:100',
+            'total_matches' => 'nullable|integer|min:0',
             'heroes' => 'required|array',
             'skins' => 'nullable|array',
         ]);
 
         Account::create([
             'rank' => $data['rank'],
-            'price' => $data['price'],
+            'highest_rank' => $data['highest_rank'] ?? null,
+            'winrate' => $data['winrate'] ?? null,
+            'total_matches' => $data['total_matches'] ?? null,
             'heroes' => $data['heroes'],
             'skins' => $data['skins'] ?? [],
         ]);

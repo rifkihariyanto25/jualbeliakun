@@ -72,7 +72,8 @@ class ImportMlbbHeroes extends Command
                         Skin::create([
                             'hero_id' => $hero->id,
                             'skin_name' => $skinData['skin_name'] ?? 'Unknown',
-                            'skin_image' => $skinData['skin_image'] ?? null
+                            'skin_image' => $skinData['skin_image'] ?? null,
+                            'category' => $skinData['category'] ?? 'Common'
                         ]);
                     }
                 }

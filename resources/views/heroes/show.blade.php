@@ -65,6 +65,23 @@
                                     #{{ $index + 1 }}
                                 </span>
                             </div>
+                            <div class="position-absolute top-0 end-0 m-2">
+                                @php
+                                    $categoryClass = match($skin->category) {
+                                        'Other' => 'bg-secondary',
+                                        'Common' => 'bg-success',
+                                        'Exquisite' => 'bg-info',
+                                        'Exceptional' => 'bg-primary',
+                                        'Supreme' => 'bg-warning text-dark',
+                                        'Deluxe' => 'bg-danger',
+                                        'Legend' => 'bg-dark',
+                                        default => 'bg-secondary'
+                                    };
+                                @endphp
+                                <span class="badge {{ $categoryClass }}">
+                                    {{ $skin->category }}
+                                </span>
+                            </div>
                         </div>
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ $skin->skin_name }}</h5>

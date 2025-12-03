@@ -12,8 +12,22 @@ class Account extends Model
     protected $fillable = [
         'username',
         'rank',
+        'highest_rank',
+        'winrate',
+        'total_matches',
+        'honor',
+        'glory',
+        'immortal',
         'hero_count',
         'skin',
         'price',
+        'heroes',
+        'skins',
+    ];
+
+    protected $casts = [
+        'heroes' => 'array',
+        'skins' => 'array',
+        'winrate' => 'decimal:2',
     ];
 }
