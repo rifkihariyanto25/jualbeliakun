@@ -10,13 +10,15 @@ import pickle
 import json
 
 # Load data
-print("Loading data...")
-df = pd.read_csv("datafixbener.csv")
+print("Loading data from benerlagi.csv...")
+df = pd.read_csv("benerlagi.csv")
 
 # Display basic info
 print(f"\nData shape: {df.shape}")
 print(f"\nFirst few rows:")
 print(df.head())
+print(f"\nColumn names:")
+print(df.columns.tolist())
 print(f"\nMissing values:")
 print(df.isnull().sum())
 
@@ -55,16 +57,24 @@ print(f"Rows after removing missing Harga: {len(df)}")
 # Handle missing values in features
 print("\nHandling missing values...")
 
-# Fill missing score_kolektor with median
-if df["score_kolektor"].isnull().sum() > 0:
-    median_score = df["score_kolektor"].median()
-    df["score_kolektor"].fillna(median_score, inplace=True)
-    print(f"Filled score_kolektor with median: {median_score}")
+# Fill missing score values with median
+score_columns = ["score_rank", "score_koleksi", "score_winrate", "score_total match"]
+for col in score_columns:
+    if col in df.columns and df[col].isnull().sum() > 0:
+        median_val = df[col].median()
+        df[col].fillna(median_val, inplace=True)
+        print(f"Filled {col} with median: {median_val}")
 
 # Fill missing Koleksi with 'Unknown'
-if df["Koleksi"].isnull().sum() > 0:
+if "Koleksi" in df.columns and df["Koleksi"].isnull().sum() > 0:
     df["Koleksi"].fillna("Unknown", inplace=True)
     print("Filled missing Koleksi with 'Unknown'")
+
+# Fill missing Rank with most common
+if "Rank" in df.columns and df["Rank"].isnull().sum() > 0:
+    most_common_rank = df["Rank"].mode()[0]
+    df["Rank"].fillna(most_common_rank, inplace=True)
+    print(f"Filled missing Rank with: {most_common_rank}")
 
 # ============================================
 # 2. FEATURE ENGINEERING
@@ -78,22 +88,26 @@ print("=" * 50)
 le_rank = LabelEncoder()
 le_koleksi = LabelEncoder()
 
-df["Rank_Encoded"] = le_rank.fit_transform(df["Rank Tertinggi"].astype(str))
+df["Rank_Encoded"] = le_rank.fit_transform(df["Rank"].astype(str))
 df["Koleksi_Encoded"] = le_koleksi.fit_transform(df["Koleksi"].astype(str))
 
-print(f"\nRank categories: {le_rank.classes_}")
-print(f"Koleksi categories: {le_koleksi.classes_}")
+print(f"\nRank categories ({len(le_rank.classes_)}): {le_rank.classes_[:10]}...")
+print(f"Koleksi categories ({len(le_koleksi.classes_)}): {le_koleksi.classes_[:10]}...")
 
-# Select features for modeling
+# Select features for modeling (Raw + Score features)
 features = [
     "Rank_Encoded",
-    "score",
+    "score_rank",
     "Koleksi_Encoded",
     "Jumlah Skin",
-    "score_kolektor",
-    "Winrate keseluruhan",
+    "score_koleksi",
+    "Winrate",
+    "score_winrate",
     "total match",
+    "score_total match",
 ]
+
+print(f"\nFeatures selected: {features}")
 
 # Remove rows with missing values in features
 print(f"\nRows before removing missing features: {len(df)}")
@@ -194,32 +208,44 @@ feature_importance = pd.DataFrame(
 
 print("\n🎯 FEATURE IMPORTANCE:")
 for idx, row in feature_importance.iterrows():
-    print(
-        f"  {row['Feature']:<25} {row['Importance']:.4f} {'█' * int(row['Importance'] * 100)}"
-    )
+    bar = "█" * int(row["Importance"] * 100)
+    print(f"  {row['Feature']:<25} {row['Importance']:.4f} {bar}")
 
 # ============================================
-# 7. PREDICTION EXAMPLES
+# 7. SAVE MODEL & ENCODERS
 # ============================================
 
 print("\n" + "=" * 50)
-print("STEP 7: Prediction Examples")
+print("STEP 7: Saving Model & Encoders")
 print("=" * 50)
 
-# Show some predictions vs actual
-comparison = pd.DataFrame(
-    {
-        "Actual": y_test.values[:10],
-        "Predicted": y_test_pred[:10],
-        "Difference": y_test.values[:10] - y_test_pred[:10],
-    }
-)
+# Save the trained model
+with open("rf_model.pkl", "wb") as f:
+    pickle.dump(rf_model, f)
+print("✓ Model saved as 'rf_model.pkl'")
 
-print("\n📋 First 10 Predictions:")
-for idx, row in comparison.iterrows():
-    print(
-        f"  Actual: Rp {row['Actual']:>12,.0f} | Predicted: Rp {row['Predicted']:>12,.0f} | Diff: Rp {row['Difference']:>10,.0f}"
-    )
+# Save encoders
+encoders = {"le_rank": le_rank, "le_koleksi": le_koleksi}
+with open("encoders.pkl", "wb") as f:
+    pickle.dump(encoders, f)
+print("✓ Encoders saved as 'encoders.pkl'")
+
+# Save feature names and model metadata
+metadata = {
+    "features": features,
+    "rank_classes": le_rank.classes_.tolist(),
+    "koleksi_classes": le_koleksi.classes_.tolist(),
+    "train_samples": len(X_train),
+    "test_samples": len(X_test),
+    "test_mae": float(test_mae),
+    "test_rmse": float(test_rmse),
+    "test_r2": float(test_r2),
+    "feature_importance": feature_importance.to_dict("records"),
+}
+
+with open("model_metadata.json", "w") as f:
+    json.dump(metadata, f, indent=2)
+print("✓ Metadata saved as 'model_metadata.json'")
 
 # ============================================
 # 8. VISUALIZATION
@@ -281,57 +307,21 @@ plt.savefig("random_forest_results.png", dpi=300, bbox_inches="tight")
 print("✓ Visualization saved as 'random_forest_results.png'")
 
 # ============================================
-# 9. SAVE MODEL & ENCODERS
+# 9. MODEL SUMMARY
 # ============================================
 
 print("\n" + "=" * 50)
-print("STEP 9: Saving Model & Encoders")
-print("=" * 50)
-
-# Save the trained model
-with open("rf_model.pkl", "wb") as f:
-    pickle.dump(rf_model, f)
-print("✓ Model saved as 'rf_model.pkl'")
-
-# Save encoders
-encoders = {"le_rank": le_rank, "le_koleksi": le_koleksi}
-with open("encoders.pkl", "wb") as f:
-    pickle.dump(encoders, f)
-print("✓ Encoders saved as 'encoders.pkl'")
-
-# Save feature names and model metadata
-metadata = {
-    "features": features,
-    "rank_classes": le_rank.classes_.tolist(),
-    "koleksi_classes": le_koleksi.classes_.tolist(),
-    "train_samples": len(X_train),
-    "test_samples": len(X_test),
-    "test_mae": float(test_mae),
-    "test_rmse": float(test_rmse),
-    "test_r2": float(test_r2),
-    "feature_importance": feature_importance.to_dict("records"),
-}
-
-with open("model_metadata.json", "w") as f:
-    json.dump(metadata, f, indent=2)
-print("✓ Metadata saved as 'model_metadata.json'")
-
-# ============================================
-# 10. MODEL SUMMARY
-# ============================================
-
-print("\n" + "=" * 50)
-print("STEP 10: Model Summary")
+print("STEP 9: Model Summary")
 print("=" * 50)
 
 print(
     f"""
-🎯 RANDOM FOREST MODEL SUMMARY:
+🎯 RANDOM FOREST MODEL SUMMARY (Updated with benerlagi.csv):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✓ Total samples: {len(df_clean)}
 ✓ Training samples: {len(X_train)}
 ✓ Test samples: {len(X_test)}
-✓ Number of features: {len(features)}
+✓ Number of features: {len(features)} (Raw + Score)
 ✓ Number of trees: {rf_model.n_estimators}
 ✓ Max depth: {rf_model.max_depth}
 
@@ -347,9 +337,9 @@ print(
 )
 
 for idx, row in feature_importance.head(3).iterrows():
-    print(f"  {idx+1}. {row['Feature']:<25} {row['Importance']:.4f}")
+    print(f"  {row['Feature']:<25} {row['Importance']:.4f}")
 
-print("\n✅ Analysis completed successfully!")
+print("\n✅ Model training completed successfully!")
 print("\n📦 FILES GENERATED:")
 print("  - rf_model.pkl (trained model)")
 print("  - encoders.pkl (label encoders)")

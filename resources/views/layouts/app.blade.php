@@ -37,6 +37,11 @@
                             <i class="bi bi-person-badge"></i> Heroes
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('prediction.*') ? 'active' : '' }}" href="{{ route('prediction.index') }}">
+                            <i class="bi bi-calculator"></i> Price Prediction
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
