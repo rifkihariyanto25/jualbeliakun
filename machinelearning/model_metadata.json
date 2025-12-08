@@ -11,16 +11,26 @@
     "score_total match"
   ],
   "rank_classes": [
+    "Elite I",
+    "Elite II",
+    "Elite III",
+    "Elite IV",
     "Epic I",
     "Epic II",
     "Epic III",
     "Epic IV",
     "Epic V",
+    "Grandmaster I",
+    "Grandmaster III",
+    "Grandmaster IV",
     "Legend I",
     "Legend II",
     "Legend III",
     "Legend IV",
     "Legend V",
+    "Master I",
+    "Master III",
+    "Master IV",
     "Mythic (1 Bintang)",
     "Mythic (10 Bintang)",
     "Mythic (11 Bintang)",
@@ -53,7 +63,6 @@
     "Mythical Glory (71 Bintang)",
     "Mythical Glory (77 Bintang)",
     "Mythical Glory (81 Bintang)",
-    "Mythical Glory (82 Bintang)",
     "Mythical Glory (85 Bintang)",
     "Mythical Glory (87 Bintang)",
     "Mythical Glory (89 Bintang)",
@@ -70,53 +79,95 @@
     "Mythical Honor (31 Bintang)",
     "Mythical Honor (32 Bintang)",
     "Mythical Honor (33 Bintang)",
+    "Mythical Honor (34 Bintang)",
     "Mythical Honor (35 Bintang)",
     "Mythical Honor (36 Bintang)",
     "Mythical Honor (37 Bintang)",
     "Mythical Honor (38 Bintang)",
     "Mythical Honor (39 Bintang)",
+    "Mythical Honor (40 Bintang)",
     "Mythical Honor (41 Bintang)",
     "Mythical Honor (42 Bintang)",
     "Mythical Honor (43 Bintang)",
+    "Mythical Honor (44 Bintang)",
     "Mythical Honor (45 Bintang)",
     "Mythical Honor (46 Bintang)",
-    "Mythical Honor (47 Bintang)"
+    "Mythical Honor (47 Bintang)",
+    "Mythical Honor (48 Bintang)",
+    "Mythical Honor (49 Bintang)",
+    "Warrior I",
+    "Warrior II",
+    "Warrior III"
   ],
   "koleksi_classes": [
-    "HB",
     "Kokektor TernamaIII ",
+    "Kolektor Ahli I",
     "Kolektor Ahli I ",
+    "Kolektor Ahli II",
     "Kolektor Ahli II ",
+    "Kolektor Ahli III",
+    "Kolektor Ahli IV",
+    "Kolektor Ahli V",
     "Kolektor Ahli V ",
+    "Kolektor Amatir I",
+    "Kolektor Amatir II",
+    "Kolektor Amatir III",
+    "Kolektor Amatir IV",
+    "Kolektor Amatir V",
+    "Kolektor Biasa I",
+    "Kolektor Biasa II",
+    "Kolektor Elite",
     "Kolektor IV ",
-    "Kolektor Juraga I ",
+    "Kolektor Junior I",
+    "Kolektor Junior II",
+    "Kolektor Junior III",
+    "Kolektor Junior IV",
+    "Kolektor Junior V",
     "Kolektor Juragan ",
-    "Kolektor Juragan I ",
+    "Kolektor Juragan I",
+    "Kolektor Juragan II",
     "Kolektor Juragan II ",
+    "Kolektor Juragan III",
     "Kolektor Juragan III ",
+    "Kolektor Juragan IV",
     "Kolektor Juragan IV ",
+    "Kolektor Juragan V",
     "Kolektor Juragan V ",
+    "Kolektor Legendaris",
+    "Kolektor Master",
+    "Kolektor Senior I",
     "Kolektor Senior I ",
+    "Kolektor Senior II",
+    "Kolektor Senior III",
+    "Kolektor Senior IV",
     "Kolektor Senior IV ",
-    "Kolektor Sultan ",
-    "Kolektor Terhormat",
+    "Kolektor Senior V",
+    "Kolektor Sultan",
+    "Kolektor Sultan Besar",
     "Kolektor Terhormat ",
+    "Kolektor Terhormat I",
     "Kolektor Terhormat I ",
+    "Kolektor Terhormat II",
     "Kolektor Terhormat II ",
     "Kolektor Terhormat III",
     "Kolektor Terhormat III ",
+    "Kolektor Terhormat IV",
     "Kolektor Terhormat IV ",
+    "Kolektor Terhormat V",
     "Kolektor Terhormat V ",
     "Kolektor Ternama  IV ",
     "Kolektor Ternama 1 ",
+    "Kolektor Ternama I",
     "Kolektor Ternama I ",
+    "Kolektor Ternama II",
     "Kolektor Ternama II ",
+    "Kolektor Ternama III",
     "Kolektor Ternama III ",
+    "Kolektor Ternama IV",
     "Kolektor Ternama IV ",
     "Kolektor Ternama V",
     "Kolektor Ternama V ",
     "Kolektor junior 1 ",
-    "Kolektor juragan I ",
     "Kolektor juragan II ",
     "Kolektor juragan III ",
     "Kolektor juragan IV ",
@@ -131,7 +182,6 @@
     "Kolektor ternama II ",
     "Kolektor ternama III ",
     "Kolektor ternama IV ",
-    "Unknown",
     "kolektor Juragan II ",
     "kolektor Terhormat II ",
     "kolektor Terhormat III ",
@@ -148,47 +198,47 @@
     "kolektor ternama II ",
     "kolektor ternama III "
   ],
-  "train_samples": 390,
-  "test_samples": 98,
-  "test_mae": 30783655.017962016,
-  "test_rmse": 50558242.97791233,
-  "test_r2": 0.7654245331999053,
+  "train_samples": 604,
+  "test_samples": 151,
+  "test_mae": 149345.0719115961,
+  "test_rmse": 258243.25620503936,
+  "test_r2": 0.8529467751233095,
   "feature_importance": [
     {
       "Feature": "Jumlah Skin",
-      "Importance": 0.6218390105297843
-    },
-    {
-      "Feature": "score_koleksi",
-      "Importance": 0.22767652619478368
+      "Importance": 0.6897522455455302
     },
     {
       "Feature": "Koleksi_Encoded",
-      "Importance": 0.08123578333227977
+      "Importance": 0.1429973647891705
     },
     {
-      "Feature": "Winrate",
-      "Importance": 0.024058635190421073
-    },
-    {
-      "Feature": "total match",
-      "Importance": 0.020474035299628636
-    },
-    {
-      "Feature": "Rank_Encoded",
-      "Importance": 0.015113864037522108
+      "Feature": "score_koleksi",
+      "Importance": 0.08476170962917913
     },
     {
       "Feature": "score_total match",
-      "Importance": 0.004414468173340276
+      "Importance": 0.026611200664896167
     },
     {
-      "Feature": "score_rank",
-      "Importance": 0.0027948069473571822
+      "Feature": "total match",
+      "Importance": 0.020656905813245623
+    },
+    {
+      "Feature": "Winrate",
+      "Importance": 0.01618096892082076
+    },
+    {
+      "Feature": "Rank_Encoded",
+      "Importance": 0.015537503095842085
     },
     {
       "Feature": "score_winrate",
-      "Importance": 0.0023928702948830018
+      "Importance": 0.0020795996296974345
+    },
+    {
+      "Feature": "score_rank",
+      "Importance": 0.0014225019116180836
     }
   ]
 }

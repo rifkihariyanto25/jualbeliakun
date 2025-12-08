@@ -4,21 +4,25 @@ import pickle
 import numpy as np
 import pandas as pd
 import warnings
+import os
 
 # Suppress sklearn warnings
 warnings.filterwarnings("ignore")
+
+# Get script directory for absolute paths
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def load_model():
     """Load trained model and encoders"""
     try:
-        with open("rf_model.pkl", "rb") as f:
+        with open(os.path.join(script_dir, "rf_model.pkl"), "rb") as f:
             model = pickle.load(f)
 
-        with open("encoders.pkl", "rb") as f:
+        with open(os.path.join(script_dir, "encoders.pkl"), "rb") as f:
             encoders = pickle.load(f)
 
-        with open("model_metadata.json", "r") as f:
+        with open(os.path.join(script_dir, "model_metadata.json"), "r") as f:
             metadata = json.load(f)
 
         return model, encoders, metadata

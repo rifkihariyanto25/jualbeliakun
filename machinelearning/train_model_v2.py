@@ -9,9 +9,9 @@ import seaborn as sns
 import pickle
 import json
 
-# Load data
-print("Loading data from benerlagi.csv...")
-df = pd.read_csv("benerlagi.csv")
+# Load cleaned data
+print("Loading data from final_1500_cleaned.csv...")
+df = pd.read_csv("final_1500_cleaned.csv")
 
 # Display basic info
 print(f"\nData shape: {df.shape}")
@@ -34,13 +34,16 @@ print("=" * 50)
 df.columns = df.columns.str.strip()
 
 
-# Clean Harga column - remove Rp, commas, dots, spaces and convert to float
+# Clean Harga column - remove Rp, commas, spaces and convert to float
+# IMPORTANT: Remove .00 suffix first, then remove commas (thousands separator)
 def clean_price(price):
     if pd.isna(price) or price == "":
         return np.nan
-    price_str = (
-        str(price).replace("Rp", "").replace(",", "").replace(".", "").replace(" ", "")
-    )
+    price_str = str(price).replace("Rp", "").replace(" ", "").strip()
+    # Remove .00 decimal part if exists
+    price_str = price_str.replace(".00", "")
+    # Remove commas (thousands separator)
+    price_str = price_str.replace(",", "")
     try:
         return float(price_str)
     except:

@@ -25,14 +25,49 @@
                         <?php echo csrf_field(); ?>
                         
                         <div class="row g-3">
-                            <!-- Rank Tertinggi -->
-                            <div class="col-md-12">
-                                <label for="rank" class="form-label fw-bold">
-                                    <i class="bi bi-trophy-fill text-warning"></i> Rank Tertinggi
+                            <!-- Rank Category -->
+                            <div class="col-md-6">
+                                <label for="rankCategory" class="form-label fw-bold">
+                                    <i class="bi bi-trophy-fill text-warning"></i> Rank Kategori
                                 </label>
-                                <input type="text" class="form-control bg-dark text-white border-secondary" 
-                                       id="rank" name="rank" placeholder="e.g., Legend I, Mythic (19 Bintang), Epic III" required>
-                                <small class="text-muted">Your highest rank achieved (Score will be auto-calculated)</small>
+                                <select class="form-select bg-dark text-white border-secondary" 
+                                        id="rankCategory" name="rankCategory" required>
+                                    <option value="">-- Pilih Rank --</option>
+                                    <option value="Warrior">Warrior</option>
+                                    <option value="Elite">Elite</option>
+                                    <option value="Master">Master</option>
+                                    <option value="Grandmaster">Grandmaster</option>
+                                    <option value="Epic">Epic</option>
+                                    <option value="Legend">Legend</option>
+                                    <option value="Mythic">Mythic</option>
+                                    <option value="Mythical Honor">Mythical Honor</option>
+                                    <option value="Mythical Glory">Mythical Glory</option>
+                                    <option value="Immortal">Immortal</option>
+                                </select>
+                                <small class="text-muted">Pilih kategori rank tertinggi</small>
+                            </div>
+
+                            <!-- Rank Tier -->
+                            <div class="col-md-3">
+                                <label for="rankTier" class="form-label fw-bold">Tier</label>
+                                <select class="form-select bg-dark text-white border-secondary" 
+                                        id="rankTier" name="rankTier">
+                                    <option value="">-</option>
+                                    <option value="V">V</option>
+                                    <option value="IV">IV</option>
+                                    <option value="III">III</option>
+                                    <option value="II">II</option>
+                                    <option value="I">I</option>
+                                </select>
+                                <small class="text-muted">Tier (jika ada)</small>
+                            </div>
+
+                            <!-- Bintang (for Mythic ranks) -->
+                            <div class="col-md-3" id="starContainer" style="display: none;">
+                                <label for="stars" class="form-label fw-bold">Bintang</label>
+                                <input type="number" class="form-control bg-dark text-white border-secondary" 
+                                       id="stars" name="stars" min="0" max="100" placeholder="0">
+                                <small class="text-muted">Jumlah bintang</small>
                             </div>
 
                             <!-- Koleksi -->
@@ -40,9 +75,62 @@
                                 <label for="koleksi" class="form-label fw-bold">
                                     <i class="bi bi-gem text-primary"></i> Koleksi Level
                                 </label>
-                                <input type="text" class="form-control bg-dark text-white border-secondary" 
-                                       id="koleksi" name="koleksi" placeholder="e.g., Kolektor Ternama IV, Kolektor Juragan II">
-                                <small class="text-muted">Collector level (Score will be auto-calculated)</small>
+                                <select class="form-select bg-dark text-white border-secondary" 
+                                        id="koleksi" name="koleksi">
+                                    <option value="">-- Pilih Koleksi (Optional) --</option>
+                                    <optgroup label="Kolektor Pemula">
+                                        <option value="Kolektor Pemula I">Kolektor Pemula I</option>
+                                        <option value="Kolektor Pemula II">Kolektor Pemula II</option>
+                                        <option value="Kolektor Pemula III">Kolektor Pemula III</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Ahli">
+                                        <option value="Kolektor Ahli I">Kolektor Ahli I</option>
+                                        <option value="Kolektor Ahli II">Kolektor Ahli II</option>
+                                        <option value="Kolektor Ahli III">Kolektor Ahli III</option>
+                                        <option value="Kolektor Ahli IV">Kolektor Ahli IV</option>
+                                        <option value="Kolektor Ahli V">Kolektor Ahli V</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Senior">
+                                        <option value="Kolektor Senior I">Kolektor Senior I</option>
+                                        <option value="Kolektor Senior II">Kolektor Senior II</option>
+                                        <option value="Kolektor Senior III">Kolektor Senior III</option>
+                                        <option value="Kolektor Senior IV">Kolektor Senior IV</option>
+                                        <option value="Kolektor Senior V">Kolektor Senior V</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Mahir">
+                                        <option value="Kolektor Mahir I">Kolektor Mahir I</option>
+                                        <option value="Kolektor Mahir II">Kolektor Mahir II</option>
+                                        <option value="Kolektor Mahir III">Kolektor Mahir III</option>
+                                        <option value="Kolektor Mahir IV">Kolektor Mahir IV</option>
+                                        <option value="Kolektor Mahir V">Kolektor Mahir V</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Terhormat">
+                                        <option value="Kolektor Terhormat I">Kolektor Terhormat I</option>
+                                        <option value="Kolektor Terhormat II">Kolektor Terhormat II</option>
+                                        <option value="Kolektor Terhormat III">Kolektor Terhormat III</option>
+                                        <option value="Kolektor Terhormat IV">Kolektor Terhormat IV</option>
+                                        <option value="Kolektor Terhormat V">Kolektor Terhormat V</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Ternama">
+                                        <option value="Kolektor Ternama I">Kolektor Ternama I</option>
+                                        <option value="Kolektor Ternama II">Kolektor Ternama II</option>
+                                        <option value="Kolektor Ternama III">Kolektor Ternama III</option>
+                                        <option value="Kolektor Ternama IV">Kolektor Ternama IV</option>
+                                        <option value="Kolektor Ternama V">Kolektor Ternama V</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Juragan">
+                                        <option value="Kolektor Juragan">Kolektor Juragan</option>
+                                        <option value="Kolektor Juragan I">Kolektor Juragan I</option>
+                                        <option value="Kolektor Juragan II">Kolektor Juragan II</option>
+                                        <option value="Kolektor Juragan III">Kolektor Juragan III</option>
+                                        <option value="Kolektor Juragan IV">Kolektor Juragan IV</option>
+                                        <option value="Kolektor Juragan V">Kolektor Juragan V</option>
+                                    </optgroup>
+                                    <optgroup label="Kolektor Sultan">
+                                        <option value="Kolektor Sultan">Kolektor Sultan</option>
+                                    </optgroup>
+                                </select>
+                                <small class="text-muted">Collector level (Score auto-calculated)</small>
                             </div>
 
                             <!-- Jumlah Skin -->
@@ -305,6 +393,25 @@
 </style>
 
 <script>
+// Show/hide star input based on rank selection
+document.getElementById('rankCategory').addEventListener('change', function() {
+    const starContainer = document.getElementById('starContainer');
+    const rankTier = document.getElementById('rankTier');
+    const selectedRank = this.value;
+    
+    // Show star input for Mythic ranks
+    if (selectedRank === 'Mythic' || selectedRank === 'Mythical Honor' || 
+        selectedRank === 'Mythical Glory' || selectedRank === 'Immortal') {
+        starContainer.style.display = 'block';
+        rankTier.disabled = true;
+        rankTier.value = '';
+    } else {
+        starContainer.style.display = 'none';
+        rankTier.disabled = false;
+        document.getElementById('stars').value = '';
+    }
+});
+
 document.getElementById('predictionForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -313,9 +420,26 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
     document.getElementById('errorAlert').style.display = 'none';
     document.getElementById('loadingSpinner').style.display = 'block';
     
+    // Build rank string
+    const rankCategory = document.getElementById('rankCategory').value;
+    const rankTier = document.getElementById('rankTier').value;
+    const stars = document.getElementById('stars').value;
+    
+    let rankString = rankCategory;
+    if (rankTier) {
+        rankString += ' ' + rankTier;
+    } else if (stars) {
+        rankString += ' (' + stars + ' Bintang)';
+    }
+    
     // Get form data
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
+    const data = {
+        rank: rankString,
+        koleksi: document.getElementById('koleksi').value,
+        jumlah_skin: document.getElementById('jumlah_skin').value,
+        winrate: document.getElementById('winrate').value,
+        total_match: document.getElementById('total_match').value
+    };
     
     try {
         const response = await fetch('<?php echo e(route("prediction.predict")); ?>', {
